@@ -1,0 +1,44 @@
+﻿<html>
+<head>
+	<title>Wifi Presence Monitor</title>
+	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/css/style.css" type="text/css" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket = io();
+		var currentPeople = {};
+		
+		function generateSquareHtml(address, time, name) {
+			return "<div id=\"" + address.replace(/:/g, "") + "\" class=\"personSquare\"><div class=\"squareTime\">" + address + " | Last seen at " + time + "</div><div class=\"squareName\">" + name + "</div></div>";
+		}
+		
+		function generateSquareInnerHtml(address, time, name) {
+			return "<div class=\"squareTime\">" + address + " | Last seen at " + time + "</div><div class=\"squareName\">" + name + "</div>";
+		}
+		
+		$(document).ready(function () {
+			socket.on("update", function (data) {
+				console.log("Got update from server");
+				console.log(data);
+				currentPeople[data.mac] = { nicetime: data.nicetime, name: data.name };
+				//console.log(currentPeople[data.mac]);
+				var divid = "#" + data.mac.replace(/:/g, "");
+				//console.log(divid);
+				var square = $(divid);
+				if (square.length > 0) {
+					square.html(generateSquareInnerHtml(data.mac, data.nicetime, data.name));
+				} else {
+					$("#peopleArea").html($("#peopleArea").html() + generateSquareHtml(data.mac, data.nicetime, data.name));
+				}
+			});
+		});
+		
+	</script>
+</head>
+<body>
+	<div id="peopleArea">
+	</div>
+</body>
+
+</html>

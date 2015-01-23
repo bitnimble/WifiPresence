@@ -1,6 +1,6 @@
 # WifiPresence
 WifiPresence is a program intended to determine the presence of registered users based on sniffed packets.
-It sniffs nearby packets for MAC addresses, and by looking up a list of registered users it can determine whether somebody is nearby or not. 
+It sniffs nearby packets for MAC addresses, and by looking up a list of registered users it can determine whether somebody is nearby or not.  
 This program requires the users in question to have wifi enabled on their devices and generating traffic - passive traffic from a smartphone (even if the phone is asleep) should be enough to be detected. However, for debugging purposes it may be safer to load a video or a few webpages just to ensure that the packets are definitely being sniffed.
 
 The program is split into multiple parts in order to maintain modularity:
